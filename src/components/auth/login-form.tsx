@@ -20,7 +20,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, { email, password });
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`, { email, password });
   
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
