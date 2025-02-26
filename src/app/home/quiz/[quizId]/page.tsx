@@ -33,21 +33,21 @@ export default function QuizPage() {
   useEffect(() => {
     async function fetchQuizData() {
       if (!quizId) {
-        console.error("❌ No lessonId found in URL params.");
+        console.error("No lessonId found in URL params.");
         return;
       }
 
-      console.log("🔍 Fetching questions for lesson:", quizId);
+      console.log("Fetching questions for lesson:", quizId);
 
       try {
         const response = await axios.get(`http://localhost:5000/api/questions/lessons/${quizId}`);
-        console.log("✅ API Response:", response.data);
+        console.log("API Response:", response.data);
 
         setQuestions(response.data.questions || []);
       } catch (error) {
-        console.error("❌ Error fetching questions:", error);
+        console.error("Error fetching questions:", error);
       } finally {
-        setLoading(false); // ✅ Stops infinite loading
+        setLoading(false); 
       }
     }
 

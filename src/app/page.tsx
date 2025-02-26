@@ -9,11 +9,11 @@ export default function LandingPage() {
 
   useEffect(() => {
     if (!loading && user) {
-      router.replace("/home"); // Redirect to home if user is logged in
+      router.replace("/home"); 
     }
   }, [user, loading, router]);
 
-  if (loading) return <p>Loading...</p>; // Prevent flickering
+  if (loading) return <p>Loading...</p>; 
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">

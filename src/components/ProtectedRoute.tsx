@@ -9,11 +9,10 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/"); // Redirect to landing page if not logged in
+      router.push("/"); 
     }
   }, [user, loading, router]);
 
-  if (loading) return <p>Loading...</p>; // Show a loader while checking auth status
-
+  if (loading) return <p>Loading...</p>; 
   return <>{user ? children : null}</>;
 };

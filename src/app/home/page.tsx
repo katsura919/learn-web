@@ -6,7 +6,7 @@ import LessonForm from "@/components/home/lesson-form";
 import LessonList from "@/components/home/lesson-list";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { motion } from "framer-motion"; // For smooth animations
+import { motion } from "framer-motion"; 
 
 export default function HomePage() {
   const { logout } = useAuth();

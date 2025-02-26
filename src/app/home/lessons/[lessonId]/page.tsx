@@ -49,7 +49,7 @@ export default function LessonDetails() {
     if (lessonId) fetchLessonAndQuestions();
   }, [lessonId]);
 
-    // 🔹 Handle Generate Questions
+    // Handle Generate Questions
     const handleGenerateQuestions = async () => {
       setIsGenerating(true);
       setShowDialog(true);
@@ -58,7 +58,7 @@ export default function LessonDetails() {
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/questions/lessons/${lessonId}/generate`
         );
       } catch (error) {
-        console.error("❌ Error generating questions:", error);
+        console.error("Error generating questions:", error);
       } finally {
         setIsGenerating(false);
         setShowDialog(false);
@@ -85,7 +85,7 @@ export default function LessonDetails() {
               </Button>
             </Link>
 
-            {/* 🔹 AI Generate Button */}
+            {/* AI Generate Button */}
             {questions.length === 0 && (
               <Button
                 onClick={handleGenerateQuestions}
@@ -100,7 +100,7 @@ export default function LessonDetails() {
           <h2 className="text-3xl font-extrabold text-[#cdd6f4]">{lesson.title}</h2>
           <p className="text-[#a6adc8] mt-2">{lesson.content}</p>
 
-          {/* 🔹 Show Quiz & Questions If Available */}
+          {/* Show Quiz & Questions If Available */}
           {questions.length > 0 && (
             <>
               <Link href={`/home/quiz/${lessonId}`}>
