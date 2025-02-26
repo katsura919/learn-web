@@ -3,17 +3,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import { Card } from "@/components/ui/card";
+import { motion } from "framer-motion";
 
 export default function LessonList() {
-  const { user } = useAuth(); // Get logged-in user
+  const { user } = useAuth();
   const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  console.log(lessons)
+
   useEffect(() => {
     const fetchLessons = async () => {
       try {
-        const token = localStorage.getItem("token"); // Get token
+        const token = localStorage.getItem("token");
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/lessons`,
           {
@@ -31,29 +33,49 @@ export default function LessonList() {
     fetchLessons();
   }, []);
 
-  if (loading) return <p>Loading lessons...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-32">
+        <p className="text-[#cdd6f4] animate-pulse">Loading lessons...</p>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="flex justify-center items-center h-32">
+        <p className="text-red-400">{error}</p>
+      </div>
+    );
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md w-full max-w-md">
-      <h2 className="text-xl font-semibold mb-4">Your Lessons</h2>
+    <Card className="p-6 bg-[#45475a] border border-[#585b70] rounded-xl shadow-lg">
+      <h2 className="text-2xl font-bold mb-4 text-[#cdd6f4]">Your Lessons</h2>
 
       {lessons.length === 0 ? (
-        <p>No lessons found.</p>
+        <p className="text-[#a6adc8] text-center">No lessons found.</p>
       ) : (
-        <ul className="space-y-3">
+        <motion.ul
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="space-y-3"
+        >
           {lessons.map((lesson: any) => (
-            <li key={lesson._id}>
+            <motion.li
+              key={lesson._id}
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
+            >
               <Link
                 href={`/home/lessons/${lesson._id}`}
-                className="block p-3 bg-blue-100 hover:bg-blue-200 rounded-md cursor-pointer"
+                className="block p-4 bg-[#585b70] hover:bg-[#6c7086] text-[#cdd6f4] rounded-lg shadow-md transition-all"
               >
                 {lesson.title}
               </Link>
-            </li>
+            </motion.li>
           ))}
-        </ul>
+        </motion.ul>
       )}
-    </div>
+    </Card>
   );
 }
