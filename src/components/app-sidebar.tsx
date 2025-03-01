@@ -24,7 +24,7 @@ const data = {
   },
   navMain: [
     {
-      title: "Getting Started",
+      title: "Navigation",
       url: "#",
       items: [
         {
@@ -32,8 +32,8 @@ const data = {
           url: "/dashboard",
         },
         {
-          title: "Project Structure",
-          url: "/dashboard/home",
+          title: "Knowledge",
+          url: "/dashboard/knowledge",
         },
       ],
     },
@@ -64,30 +64,6 @@ const data = {
         },
         {
           title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
           url: "#",
         },
       ],

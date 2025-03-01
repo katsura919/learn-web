@@ -14,28 +14,7 @@ export default function HomePage() {
   return (
 
       <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-[#1e1e2e] to-[#313244] p-6 text-white">
-        {/* Logout Button */}
-        <Button
-          onClick={logout}
-          className="absolute top-4 right-4 bg-red-500 hover:bg-red-600"
-        >
-          Logout
-        </Button>
 
-        {/* Hero Section */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-8"
-        >
-          <h1 className="text-4xl font-extrabold tracking-wide text-[#cdd6f4]">
-            Welcome to BLAHBLAH ⚡
-          </h1>
-          <p className="text-lg text-[#a6adc8] mt-2">
-            Store your lessons, generate AI-powered questions, and take quizzes!
-          </p>
-        </motion.div>
 
         {/* Lesson Form & List Container */}
         <motion.div

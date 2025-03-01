@@ -1,4 +1,8 @@
-import { AppSidebar } from "@/components/app-sidebar"
+"use client";
+
+import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,15 +10,20 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  // Convert pathname to an array of segments
+  const pathSegments = pathname.split("/").filter(Boolean);
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -25,14 +34,29 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbItem>
                   <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Current Page</BreadcrumbPage> 
-                  {/* You need to update this dynamically based on the route */}
-                </BreadcrumbItem>
+
+                {pathSegments.slice(1).map((segment, index) => {
+                  const href = `/${pathSegments.slice(0, index + 2).join("/")}`;
+                  const isLast = index === pathSegments.length - 2;
+
+                  return (
+                    <div key={href} className="flex items-center">
+                      <BreadcrumbSeparator />
+                      <BreadcrumbItem>
+                        {isLast ? (
+                          <BreadcrumbPage>{decodeURIComponent(segment)}</BreadcrumbPage>
+                        ) : (
+                          <BreadcrumbLink href={href}>
+                            {decodeURIComponent(segment)}
+                          </BreadcrumbLink>
+                        )}
+                      </BreadcrumbItem>
+                    </div>
+                  );
+                })}
               </BreadcrumbList>
             </Breadcrumb>
           </div>
@@ -40,5 +64,5 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
