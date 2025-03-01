@@ -25,7 +25,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        window.location.href = "/home"; // Redirect to home
+        window.location.href = "/dashboard"; // Redirect to home
       }
     } catch (error) {
       console.error("Login failed", error);

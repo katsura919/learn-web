@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
+
 import LessonForm from "@/components/home/lesson-form";
 import LessonList from "@/components/home/lesson-list";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,7 @@ export default function HomePage() {
   const { logout } = useAuth();
 
   return (
-    <ProtectedRoute>
+
       <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-[#1e1e2e] to-[#313244] p-6 text-white">
         {/* Logout Button */}
         <Button
@@ -53,6 +53,6 @@ export default function HomePage() {
           </div>
         </motion.div>
       </div>
-    </ProtectedRoute>
+
   );
 }
