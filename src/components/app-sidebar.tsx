@@ -1,5 +1,8 @@
-import * as React from "react"
-import { GalleryVerticalEnd } from "lucide-react"
+"use client"; // Ensure this runs on the client side
+
+import * as React from "react";
+import { GalleryVerticalEnd } from "lucide-react";
+import { usePathname } from "next/navigation"; // Import Next.js pathname hook
 
 import {
   Sidebar,
@@ -13,10 +16,11 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
-  SidebarFooter
-} from "@/components/ui/sidebar"
-import { NavUser } from "@/components/nav-user"
-// This is sample data.
+  SidebarFooter,
+} from "@/components/ui/sidebar";
+import { NavUser } from "@/components/nav-user";
+
+// Sample data
 const data = {
   user: {
     name: "Admin",
@@ -43,35 +47,36 @@ const data = {
       items: [
         {
           title: "Routing",
-          url: "#",
+          url: "/dashboard/routing",
         },
         {
           title: "Data Fetching",
-          url: "#",
-          isActive: true,
+          url: "/dashboard/data-fetching",
         },
         {
           title: "Rendering",
-          url: "#",
+          url: "/dashboard/rendering",
         },
         {
           title: "Caching",
-          url: "#",
+          url: "/dashboard/caching",
         },
         {
           title: "Styling",
-          url: "#",
+          url: "/dashboard/styling",
         },
         {
           title: "Optimizing",
-          url: "#",
+          url: "/dashboard/optimizing",
         },
       ],
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname(); // Get current page path
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -97,19 +102,29 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             {data.navMain.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild>
-                  <a href={item.url} className="font-medium">
+                  <a
+                    href={item.url}
+                    className={`font-medium ${
+                      pathname === item.url ? "text-primary font-bold" : ""
+                    }`}
+                  >
                     {item.title}
                   </a>
                 </SidebarMenuButton>
                 {item.items?.length ? (
                   <SidebarMenuSub>
-                    {item.items.map((item) => (
-                      <SidebarMenuSubItem key={item.title}>
-                        <SidebarMenuSubButton asChild isActive={item.isActive}>
-                          <a href={item.url}>{item.title}</a>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    ))}
+                    {item.items.map((subItem) => {
+                      const isActive = pathname === subItem.url;
+                      return (
+                        <SidebarMenuSubItem key={subItem.title}>
+                          <SidebarMenuSubButton asChild isActive={isActive}>
+                            <a href={subItem.url} className={isActive ? "text-primary font-bold" : ""}>
+                              {subItem.title}
+                            </a>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      );
+                    })}
                   </SidebarMenuSub>
                 ) : null}
               </SidebarMenuItem>
@@ -122,5 +137,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
