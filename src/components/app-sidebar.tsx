@@ -36,38 +36,16 @@ const data = {
           url: "/dashboard",
         },
         {
-          title: "Knowledge",
+          title: "Lessons",
           url: "/dashboard/knowledge",
         },
-      ],
-    },
-    {
-      title: "Building Your Application",
-      url: "#",
-      items: [
         {
-          title: "Routing",
-          url: "/dashboard/routing",
+          title: "Categories",
+          url: "/dashboard/categories",
         },
         {
-          title: "Data Fetching",
-          url: "/dashboard/data-fetching",
-        },
-        {
-          title: "Rendering",
-          url: "/dashboard/rendering",
-        },
-        {
-          title: "Caching",
-          url: "/dashboard/caching",
-        },
-        {
-          title: "Styling",
-          url: "/dashboard/styling",
-        },
-        {
-          title: "Optimizing",
-          url: "/dashboard/optimizing",
+          title: "Questions",
+          url: "/dashboard/questions",
         },
       ],
     },

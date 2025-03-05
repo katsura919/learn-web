@@ -1,11 +1,11 @@
 "use client";
+
 import { useAuth } from "@/context/AuthContext";
-import LessonForm from "@/components/home/lesson-form";
-import { Card } from "@/components/ui/card";
+import CategoryGrid from "@/components/home/categories/categories";
 import { motion } from "framer-motion"; 
 
-export default function HomePage() {
-  const { logout } = useAuth();
+export default function CategoryPage() {
+
 
   return (
 
@@ -19,11 +19,10 @@ export default function HomePage() {
           transition={{ duration: 0.4 }}
           className="w-full max-w-2xl"
         >
-          <Card className="p-6 bg-[#45475a] border border-[#585b70] rounded-xl shadow-lg">
-            <LessonForm />
-          </Card>
 
-
+          <div className="mt-6">
+            <CategoryGrid />
+          </div>
         </motion.div>
       </div>
 
