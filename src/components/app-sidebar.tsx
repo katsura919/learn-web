@@ -36,6 +36,10 @@ const data = {
           url: "/dashboard",
         },
         {
+          title: "Create",
+          url: "/dashboard/create",
+        },
+        {
           title: "Lessons",
           url: "/dashboard/knowledge",
         },

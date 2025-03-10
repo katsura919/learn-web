@@ -1,9 +1,9 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
-import LessonList from "@/components/home/lesson-list";
+import LessonForm from "@/components/home/lesson-form";
 import { motion } from "framer-motion"; 
 
-export default function KnowledgePage() {
+export default function CreatePage() {
   const { logout } = useAuth();
 
   return (
@@ -15,7 +15,7 @@ export default function KnowledgePage() {
         transition={{ duration: 0.4 }}
         className="w-full h-full flex flex-col flex-grow"
       >
-        <LessonList />
+        <LessonForm />
       </motion.div>
     </div>
   );
