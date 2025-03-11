@@ -61,6 +61,7 @@ export default function LessonDetails() {
       await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/questions/lessons/${lessonId}/generate`
       );
+      window.location.reload();
     } catch (error) {
       console.error("Error generating questions:", error);
     } finally {
@@ -117,7 +118,8 @@ export default function LessonDetails() {
         </Link>
         <div className="flex gap-2">
           <Button onClick={handleGenerateQuestions} className="flex items-center gap-2">
-            <Bot className="w-5 h-5 animate-bounce" /> Generate Questions
+          {isGenerating ? <Loader className="w-5 h-5 animate-spin" /> : <Bot className="w-5 h-5 animate-bounce" />}
+          Generate Questions
           </Button>
           <Button onClick={() => setShowQuestions(!showQuestions)} variant="default">
             View Questions
@@ -174,6 +176,15 @@ export default function LessonDetails() {
           <Button className="w-full">Start Quiz</Button>
         </div>
       )}
+
+      <Dialog open={showDialog}>
+        <DialogOverlay className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <DialogContent className="p-6 rounded-lg shadow-lg flex flex-col items-center">
+            <Loader className="animate-spin w-12 h-12 mb-4" />
+            <p className="text-lg">Generating AI-powered questions...</p>
+          </DialogContent>
+        </DialogOverlay>
+      </Dialog>
     </div>
   );
 }
