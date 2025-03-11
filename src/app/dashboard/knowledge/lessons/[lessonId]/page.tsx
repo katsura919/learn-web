@@ -173,7 +173,9 @@ export default function LessonDetails() {
               </li>
             ))}
           </ul>
-          <Button className="w-full">Start Quiz</Button>
+          <Link href={`/dashboard/knowledge/quiz/${lessonId}`}>
+               <Button className="w-full">Start Quiz</Button>
+           </Link>
         </div>
       )}
 
