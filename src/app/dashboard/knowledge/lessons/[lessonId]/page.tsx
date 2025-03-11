@@ -54,6 +54,21 @@ export default function LessonDetails() {
     if (lessonId) fetchLessonAndQuestions();
   }, [lessonId]);
 
+  const handleGenerateQuestions = async () => {
+    setIsGenerating(true);
+    setShowDialog(true);
+    try {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/questions/lessons/${lessonId}/generate`
+      );
+    } catch (error) {
+      console.error("Error generating questions:", error);
+    } finally {
+      setIsGenerating(false);
+      setShowDialog(false);
+    }
+  };
+
   const handleUpdateLesson = async () => {
     if (!isEditing) {
       setIsEditing(true);
@@ -101,6 +116,9 @@ export default function LessonDetails() {
           </Button>
         </Link>
         <div className="flex gap-2">
+          <Button onClick={handleGenerateQuestions} className="flex items-center gap-2">
+            <Bot className="w-5 h-5 animate-bounce" /> Generate Questions
+          </Button>
           <Button onClick={() => setShowQuestions(!showQuestions)} variant="default">
             View Questions
           </Button>
@@ -113,7 +131,7 @@ export default function LessonDetails() {
         </div>
       </div>
 
-      <div className="w-full max-w-4xl mx-auto flex flex-col gap-4">
+      <div className="w-full max-w-6xl mx-auto flex flex-col gap-4">
         {isEditing ? (
           <>
             <input
@@ -125,7 +143,7 @@ export default function LessonDetails() {
             <textarea
               value={editedContent}
               onChange={(e) => setEditedContent(e.target.value)}
-              className="w-full h-[300px] p-4 border-none focus:ring-0"
+              className="w-full min-h-[400px] p-4 border-none focus:ring-0"
             />
           </>
         ) : (
@@ -137,7 +155,7 @@ export default function LessonDetails() {
       </div>
 
       {showQuestions && (
-        <div className="w-full max-w-4xl mx-auto mt-6 space-y-4">
+        <div className="w-full max-w-6xl mx-auto mt-6 space-y-4">
           <h3 className="text-xl font-bold">Generated Questions:</h3>
           <ul className="space-y-3">
             {questions.map((q, index) => (
@@ -153,10 +171,7 @@ export default function LessonDetails() {
               </li>
             ))}
           </ul>
-          <Link href={`/dashboard/knowledge/quiz/${lessonId}`}>
-              <Button className="w-full">Start Quiz</Button>
-          </Link>
-         
+          <Button className="w-full">Start Quiz</Button>
         </div>
       )}
     </div>
