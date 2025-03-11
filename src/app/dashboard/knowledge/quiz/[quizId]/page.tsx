@@ -40,7 +40,7 @@ export default function QuizPage() {
       console.log("Fetching questions for lesson:", quizId);
 
       try {
-        const response = await axios.get(`http://localhost:5000/api/questions/lessons/${quizId}`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/questions/lessons/${quizId}`);
         console.log("API Response:", response.data);
 
         setQuestions(response.data.questions || []);

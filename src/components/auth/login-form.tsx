@@ -9,6 +9,7 @@ import { useState } from "react";
 import { RegisterForm } from "@/components/auth/register-form";
 import axios from "axios";
 import { useAuth } from "@/context/AuthContext"; // Import Auth Hook
+import { ArrowUpRight, CirclePlay } from "lucide-react";
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +39,10 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
-          <Button className="w-full">Login</Button>
+        <Button size="lg" className="rounded-full text-base">
+            Get Started <ArrowUpRight className="!h-5 !w-5" />
+          </Button>
+
         </DialogTrigger>
         <DialogContent>
           {showRegister ? (
