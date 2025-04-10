@@ -20,7 +20,7 @@ const Hero06 = () => {
           Just released v1.0.0
         </Badge>
         <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-bold !leading-[1.2] tracking-tight">
-          Welcome to ThinkBox
+          Welcome to LessonLearn
         </h1>
         <p className="mt-6 text-[17px] md:text-lg">
           Take notes, generate questions, and challenge yourself—all in one
