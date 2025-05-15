@@ -32,20 +32,20 @@ const data = {
       url: "#",
       items: [
         {
-          title: "Dashboard",
+          title: "Home",
           url: "/dashboard",
         },
         {
-          title: "Create",
+          title: "Create Lesson",
           url: "/dashboard/create",
+        },
+        {
+          title: "Notebooks",
+          url: "/dashboard/categories",
         },
         {
           title: "Lessons",
           url: "/dashboard/knowledge",
-        },
-        {
-          title: "Categories",
-          url: "/dashboard/categories",
         },
         {
           title: "Questions",
