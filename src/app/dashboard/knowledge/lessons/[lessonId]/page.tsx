@@ -3,16 +3,29 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { ArrowLeft, Bot, Loader, Trash, Pencil } from "lucide-react";
-import { Dialog, DialogContent, DialogOverlay } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import {
+  Bot,
+  Eye,
+  Pencil,
+  Trash,
+  Loader,
+  MoreVertical,
+} from "lucide-react";
+import QuestionDialog from "@/components/dashboard/question-list";
 
 export default function LessonDetails() {
   const params = useParams();
   const lessonId = params?.lessonId;
   const router = useRouter();
+
   const [lesson, setLesson] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -22,7 +35,6 @@ export default function LessonDetails() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedContent, setEditedContent] = useState("");
-  const [showQuestions, setShowQuestions] = useState(false);
 
   useEffect(() => {
     const fetchLessonAndQuestions = async () => {
@@ -110,83 +122,91 @@ export default function LessonDetails() {
 
   return (
     <div className="flex flex-col min-h-screen w-full px-8 py-6">
-      <div className="flex justify-between items-center mb-6">
-        <Link href="/home/lessons">
-          <Button variant="ghost" size="icon">
-            <ArrowLeft className="w-6 h-6" />
-          </Button>
-        </Link>
-        <div className="flex gap-2">
-          <Button onClick={handleGenerateQuestions} className="flex items-center gap-2">
-          {isGenerating ? <Loader className="w-5 h-5 animate-spin" /> : <Bot className="w-5 h-5 animate-bounce" />}
-          Generate Questions
-          </Button>
-          <Button onClick={() => setShowQuestions(!showQuestions)} variant="default">
-            View Questions
-          </Button>
-          <Button onClick={handleUpdateLesson} variant="outline" className="flex items-center gap-2">
-            <Pencil className="w-4 h-4" /> {isEditing ? "Save" : "Edit"}
-          </Button>
-          <Button onClick={handleDeleteLesson} variant="destructive" className="flex items-center gap-2">
-            <Trash className="w-4 h-4" /> Delete
-          </Button>
-        </div>
+      <div className="flex justify-end items-center mb-6">
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="icon">
+              <MoreVertical className="w-5 h-5" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent align="end" className="w-56">
+            <div className="flex flex-col gap-2">
+              <Button
+                onClick={handleGenerateQuestions}
+                variant="ghost"
+                className="justify-start"
+                disabled={isGenerating}
+              >
+                {isGenerating ? (
+                  <Loader className="w-4 h-4 animate-spin mr-2" />
+                ) : (
+                  <Bot className="w-4 h-4 mr-2" />
+                )}
+                Generate Questions
+              </Button>
+
+              <Button
+                onClick={() => setShowDialog(true)}
+                variant="ghost"
+                className="justify-start"
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                View Questions
+              </Button>
+
+              <Button
+                onClick={handleUpdateLesson}
+                variant="ghost"
+                className="justify-start"
+              >
+                <Pencil className="w-4 h-4 mr-2" />
+                {isEditing ? "Save Changes" : "Edit Lesson"}
+              </Button>
+
+              <Button
+                onClick={handleDeleteLesson}
+                variant="ghost"
+                className="justify-start text-destructive"
+              >
+                <Trash className="w-4 h-4 mr-2" />
+                Delete Lesson
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
 
       <div className="w-full max-w-6xl mx-auto flex flex-col gap-4">
         {isEditing ? (
           <>
-            <input
-              type="text"
+            <Input
               value={editedTitle}
               onChange={(e) => setEditedTitle(e.target.value)}
-              className="w-full text-3xl font-bold border-none focus:ring-0"
+              className="text-3xl font-bold"
             />
-            <textarea
+            <Textarea
               value={editedContent}
               onChange={(e) => setEditedContent(e.target.value)}
-              className="w-full min-h-[400px] p-4 border-none focus:ring-0"
+              className="min-h-[400px]"
             />
           </>
         ) : (
           <>
             <h2 className="text-3xl font-bold">{lesson.title}</h2>
-            <p className="text-muted-foreground">{lesson.content}</p>
+            <p className="text-muted-foreground whitespace-pre-wrap">
+              {lesson.content}
+            </p>
           </>
         )}
       </div>
 
-      {showQuestions && (
-        <div className="w-full max-w-6xl mx-auto mt-6 space-y-4">
-          <h3 className="text-xl font-bold">Generated Questions:</h3>
-          <ul className="space-y-3">
-            {questions.map((q, index) => (
-              <li key={index} className="p-4 rounded-md bg-muted">
-                <p className="font-medium">{q.questionText}</p>
-                <ul className="mt-2 space-y-1">
-                  {q.choices.map((choice: string, i: number) => (
-                    <li key={i} className="text-muted-foreground">
-                      <span className="font-bold">{String.fromCharCode(65 + i)}.</span> {choice}
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-          <Link href={`/dashboard/knowledge/quiz/${lessonId}`}>
-               <Button className="w-full">Start Quiz</Button>
-           </Link>
-        </div>
-      )}
-
-      <Dialog open={showDialog}>
-        <DialogOverlay className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <DialogContent className="p-6 rounded-lg shadow-lg flex flex-col items-center">
-            <Loader className="animate-spin w-12 h-12 mb-4" />
-            <p className="text-lg">Generating AI-powered questions...</p>
-          </DialogContent>
-        </DialogOverlay>
-      </Dialog>
+      <QuestionDialog
+        open={showDialog}
+        onOpenChange={setShowDialog}
+        questions={questions}
+        lessonId={lessonId as string}
+        isLoading={isGenerating}
+      />
     </div>
   );
 }

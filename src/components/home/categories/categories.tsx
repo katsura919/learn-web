@@ -62,7 +62,7 @@ export default function CategoryGrid() {
 
  const handleCardClick = (categoryId: string, categoryName: string) => {
   router.push(
-    `/dashboard/categories/lessonlist/${categoryId}?name=${encodeURIComponent(categoryName)}`
+    `/dashboard/notebooks/lessonlist/${categoryId}?name=${encodeURIComponent(categoryName)}`
   );
 };
 
@@ -111,7 +111,7 @@ export default function CategoryGrid() {
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="w-full max-w-screen-lg mx-auto px-4 py-10"
+      className="w-full max-w-screen-lg mx-auto"
     >
       <div className="mb-8 relative">
         <div className="relative">
@@ -159,7 +159,8 @@ export default function CategoryGrid() {
           )}
         </motion.div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-6 justify-start">
+
           {filtered.map((category) => (
             <motion.div
               key={category._id}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams  } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,8 @@ interface Lesson {
 
 export default function CategoryLessonsPage() {
   const { categoryId } = useParams();
+const searchParams = useSearchParams();
+const name = searchParams.get("name");
   const router = useRouter();
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const [loading, setLoading] = useState(true);
@@ -91,15 +93,7 @@ export default function CategoryLessonsPage() {
   return (
     <div className="w-full max-w-screen-lg mx-auto px-4 py-8">
       <div className="flex items-center gap-4 mb-8">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={() => router.back()}
-          className="rounded-full"
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <h1 className="text-2xl font-bold">Lessons</h1>
+        <h1 className="text-2xl font-bold"> {name ? decodeURIComponent(name) : "Lessons"}</h1>
       </div>
 
       {lessons.length === 0 ? (

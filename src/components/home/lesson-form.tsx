@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 
 export default function LessonForm() {
   const { user } = useAuth();
@@ -32,8 +33,6 @@ export default function LessonForm() {
   const [newCategoryName, setNewCategoryName] = useState("");
   const [loading, setLoading] = useState(false);
   const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -52,6 +51,9 @@ export default function LessonForm() {
         }
       } catch (err) {
         console.error("Error fetching categories:", err);
+        toast("Failed to load categories.", {
+          className: "bg-red-600 text-white",
+        });
       }
     };
 
@@ -60,13 +62,14 @@ export default function LessonForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    toast.dismiss();
     setLoading(true);
 
     const token = localStorage.getItem("token");
     if (!token) {
-      setError("You are not authorized. Please log in.");
+      toast.error("You are not authorized. Please log in.", {
+        className: "bg-red-600 text-white",
+      });
       setLoading(false);
       return;
     }
@@ -77,7 +80,9 @@ export default function LessonForm() {
       "";
 
     if (!categoryName) {
-      setError("Please select or create a category.");
+      toast.error("Please select or create a category.", {
+        className: "bg-red-600 text-white",
+      });
       setLoading(false);
       return;
     }
@@ -95,14 +100,19 @@ export default function LessonForm() {
         }
       );
 
-      setSuccess("Lesson created successfully!");
+      toast.success("Lesson created successfully!", {
+        className: "bg-green-600 text-white",
+      });
+
       setTitle("");
       setContent("");
       setSelectedCategoryId("");
       setNewCategoryName("");
     } catch (err) {
       console.error("Error submitting lesson:", err);
-      setError("Failed to create lesson.");
+      toast.error("Failed to create lesson.", {
+        className: "bg-red-600 text-white",
+      });
     } finally {
       setLoading(false);
     }
@@ -115,11 +125,6 @@ export default function LessonForm() {
       transition={{ duration: 0.3 }}
       className="w-full max-w-screen-lg mx-auto px-4 py-10"
     >
-      <h2 className="text-3xl font-semibold mb-6">📚 Create a Lesson</h2>
-
-      {error && <p className="text-sm text-red-500 mb-2">{error}</p>}
-      {success && <p className="text-sm text-green-500 mb-2">{success}</p>}
-
       <form onSubmit={handleSubmit} className="space-y-6">
         <Input
           placeholder="Lesson Title"
@@ -137,7 +142,7 @@ export default function LessonForm() {
                 setCategoryDialogOpen(true);
               } else {
                 setSelectedCategoryId(value);
-                setNewCategoryName(""); // clear new name
+                setNewCategoryName("");
               }
             }}
           >
@@ -171,7 +176,7 @@ export default function LessonForm() {
         </Button>
       </form>
 
-      {/* Category Input Dialog (does NOT call API) */}
+      {/* Category Input Dialog */}
       <Dialog open={categoryDialogOpen} onOpenChange={setCategoryDialogOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -188,7 +193,7 @@ export default function LessonForm() {
             <Button
               onClick={() => {
                 setCategoryDialogOpen(false);
-                setSelectedCategoryId(""); // clear any selection
+                setSelectedCategoryId("");
               }}
               disabled={!newCategoryName.trim()}
             >

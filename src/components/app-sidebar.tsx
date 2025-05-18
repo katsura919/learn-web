@@ -1,9 +1,9 @@
-"use client"; // Ensure this runs on the client side
+"use client";
 
 import * as React from "react";
-import { GalleryVerticalEnd } from "lucide-react";
-import { usePathname } from "next/navigation"; // Import Next.js pathname hook
-
+import { usePathname } from "next/navigation";
+import Image from "next/image";
+import axios from "axios";
 import {
   Sidebar,
   SidebarContent,
@@ -19,45 +19,40 @@ import {
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import { NavUser } from "@/components/nav-user";
+import { fetchUserById } from "@/lib/api/user";
 
-// Sample data
-const data = {
-  user: {
-    name: "Admin",
-    email: "admin@example.com",
-  },
-  navMain: [
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+  const [user, setUser] = React.useState<{ name: string; email: string } | null>(null);
+
+  React.useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const userData = await fetchUserById();
+        setUser({
+          name: `${userData.firstName} ${userData.lastName}`,
+          email: userData.email,
+        });
+      } catch (error) {
+        console.error("Failed to fetch user:", error);
+      }
+    };
+
+    loadUser();
+  }, []);
+
+  const navMain = [
     {
       title: "Navigation",
       url: "#",
       items: [
-        {
-          title: "Home",
-          url: "/dashboard",
-        },
-        {
-          title: "Create Lesson",
-          url: "/dashboard/create",
-        },
-        {
-          title: "Notebooks",
-          url: "/dashboard/categories",
-        },
-        {
-          title: "Lessons",
-          url: "/dashboard/knowledge",
-        },
-        {
-          title: "Questions",
-          url: "/dashboard/questions",
-        },
+        { title: "Home", url: "/dashboard" },
+        { title: "Create Lesson", url: "/dashboard/create" },
+        { title: "Notebooks", url: "/dashboard/notebooks" },
+        { title: "Questions", url: "/dashboard/questions" },
       ],
     },
-  ],
-};
-
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const pathname = usePathname(); // Get current page path
+  ];
 
   return (
     <Sidebar {...props}>
@@ -67,10 +62,16 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarMenuButton size="lg" asChild>
               <a href="#">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <GalleryVerticalEnd className="size-4" />
+                  <Image
+                    src="/icons/logo.png"
+                    alt="My Icon"
+                    width={30}
+                    height={20}
+                    className="size-7"
+                  />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">Documentation</span>
+                  <span className="font-semibold">Lesson Learn</span>
                   <span className="">v1.0.0</span>
                 </div>
               </a>
@@ -81,14 +82,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {data.navMain.map((item) => (
+            {navMain.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild>
                   <a
                     href={item.url}
-                    className={`font-medium ${
-                      pathname === item.url ? "text-primary font-bold" : ""
-                    }`}
+                    className={`font-medium ${pathname === item.url ? "text-primary font-bold" : ""}`}
                   >
                     {item.title}
                   </a>
@@ -115,11 +114,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        {user ? <NavUser user={user} /> : <span className="text-sm text-muted-foreground">Loading...</span>}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   );
 }
-
-
