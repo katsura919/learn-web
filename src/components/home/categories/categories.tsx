@@ -9,9 +9,11 @@ import { motion } from "framer-motion";
 import { NotebookText, Search, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import socket, { connectSocket} from "@/utils/socket";
 
 interface Category {
   _id: string;
+  id: string;
   name: string;
 }
 
@@ -23,6 +25,50 @@ export default function CategoryGrid() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  console.log("🚀 Categories:", categories);
+
+useEffect(() => {
+  let isMounted = true;
+
+  const handleNewCategory = (newCategory: any) => {
+    if (!isMounted) return;
+
+    setCategories((prev) => {
+      const exists = prev.some(
+        (cat) => cat._id === newCategory._id || cat.id === newCategory.id
+      );
+      if (exists) return prev;
+
+      const updated = [...prev, newCategory];
+      return updated.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+    });
+  };
+
+  const initializeSocket = async () => {
+    await connectSocket(); // waits for connection
+
+    // Cleanup before registering to avoid duplicates
+    socket.off("category_created", handleNewCategory);
+    socket.off("new_category", handleNewCategory);
+
+    socket.on("category_created", handleNewCategory);
+    socket.on("new_category", handleNewCategory);
+  };
+
+  initializeSocket();
+
+  return () => {
+    isMounted = false;
+    socket.off("category_created", handleNewCategory);
+    socket.off("new_category", handleNewCategory);
+  };
+}, []);
+
+
+
 
   const fetchCategories = async () => {
     try {
@@ -50,8 +96,9 @@ export default function CategoryGrid() {
   };
 
   useEffect(() => {
-    fetchCategories();
-  }, []);
+  fetchCategories();
+}, []);
+
 
   useEffect(() => {
     const results = categories.filter((cat) =>
@@ -163,7 +210,7 @@ export default function CategoryGrid() {
 
           {filtered.map((category) => (
             <motion.div
-              key={category._id}
+              key={category._id || category.id}
               whileHover={{ y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => handleCardClick(category._id, category.name)}

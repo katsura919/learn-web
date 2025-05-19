@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 import Link from "next/link";
 import { AppSidebar } from "@/components/app-sidebar";
 import {
@@ -19,6 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 import { ThemeToggle } from "@/components/theme-toggle";
 
+
 // Utility: Capitalize each word
 function formatSegment(segment: string) {
   if (/^[a-f\d]{24}$/i.test(segment)) {
@@ -33,6 +35,7 @@ function formatSegment(segment: string) {
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const pathSegments = pathname.split("/").filter(Boolean);
+
 
   return (
     <SidebarProvider>
