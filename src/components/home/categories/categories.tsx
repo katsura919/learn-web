@@ -1,5 +1,5 @@
 "use client";
-
+//imports
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -48,9 +48,9 @@ useEffect(() => {
   };
 
   const initializeSocket = async () => {
-    await connectSocket(); // waits for connection
+    await connectSocket(); 
 
-    // Cleanup before registering to avoid duplicates
+  
     socket.off("category_created", handleNewCategory);
     socket.off("new_category", handleNewCategory);
 
