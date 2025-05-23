@@ -24,7 +24,6 @@ export default function LessonEditor({ content, setContent }: { content: string,
     },
   });
 
-  // Reset content when `content` changes (clears editor)
   useEffect(() => {
     if (editor) {
       editor.commands.clearContent(true);
