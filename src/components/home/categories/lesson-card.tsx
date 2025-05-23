@@ -14,6 +14,7 @@ interface LessonCardProps {
   onClick: () => void;
 }
 
+
 export default function LessonCard({ lesson, onClick }: LessonCardProps) {
   const formattedDate = new Date(lesson.createdAt).toLocaleDateString("en-US", {
     year: "numeric",
