@@ -7,6 +7,7 @@ export default function QuestionPage() {
   const { logout } = useAuth();
 
   return (
+    
     <div className="relative flex flex-col items-center justify-center min-h-screen w-full p-6">
       {/* Lesson List Container */}
       <motion.div
