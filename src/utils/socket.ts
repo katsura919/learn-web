@@ -1,7 +1,7 @@
 // lib/socket.ts
 import { io } from "socket.io-client";
 
-const apiUrl = process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5000";
+const apiUrl = "https://learn-server-fmbt.onrender.com";
 const socket = io(apiUrl, {
   transports: ["websocket"],
   autoConnect: false,
