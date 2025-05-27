@@ -9,6 +9,7 @@ export default function CreatePage() {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen w-full p-6">
       {/* Lesson List Container */}
+      
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}

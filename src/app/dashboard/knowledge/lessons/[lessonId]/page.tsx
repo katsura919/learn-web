@@ -69,10 +69,12 @@ export default function LessonDetails() {
   const handleGenerateQuestions = async () => {
     setIsGenerating(true);
     setShowDialog(true);
+    
     try {
       await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/questions/lessons/${lessonId}/generate`
       );
+      
       window.location.reload();
     } catch (error) {
       console.error("Error generating questions:", error);
